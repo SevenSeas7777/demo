@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EmpMapper">
+
+    <delete id="deleteById">
+        delete from emp where id=#{id}
+    </delete>
+    <delete id="delete">
+        delete from emp where id in
+        <foreach collection="ids" open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <select id="list" resultType="com.example.demo.pojo.Emp">
+        select * from emp
+        <where>
+            <if test="name !=null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="gender !=null">
+                and gender=#{gender}
+            </if>
+            <if test="begin !=null and end !=null">
+                and entrydate between #{begin} and #{end}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+
+    <update id="updateById">
+        update emp set username=#{username},name=#{name}, gender=#{gender}, image=#{image}, job=#{job},
+        entrydate=#{entrydate}, dept_id=#{deptId}, update_time=#{updateTime}
+        <where>id=#{id}</where>
+    </update>
+    <update id="update">
+        update emp
+        <set>
+            <if test="username !=null">
+                username=#{username},
+            </if>
+            <if test="password !=null">
+                password=#{password},
+            </if>
+            <if test="name !=null">
+                name=#{name},
+            </if>
+            <if test="gender !=null">
+                gender=#{gender},
+            </if>
+            <if test="image !=null">
+                image=#{image},
+            </if>
+            <if test="job !=null">
+                job=#{job},
+            </if>
+            <if test="entrydate !=null">
+                entrydate=#{entrydate},
+            </if>
+            <if test="deptId !=null">
+                dept_id=#{deptId},
+            </if>
+            <if test="updateTime !=null">
+                update_time=#{updateTime}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <insert id="insert">
+        insert into emp (username,name,gender,image,job,entrydate,dept_id,create_time,update_time)
+        values (#{username}, #{name}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime})
+    </insert>
+    <insert id="batchInsert">
+        insert into emp (username,name) values
+        <foreach collection="list" separator="," item="iteam">
+            (#{iteam.username},#{iteam.name})
+        </foreach>
+    </insert>
+
+</mapper>

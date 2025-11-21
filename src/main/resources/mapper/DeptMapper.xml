@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DeptMapper">
+
+
+    <select id="selectByHave" resultType="com.example.demo.pojo.Dept1">
+        select * from dept1 where count>=#{count}
+    </select>
+    <select id="selectBySal" resultType="java.lang.String">
+        select ename from emp1 where sal>(select sal from emp1 where ename=#{ename})
+    </select>
+    <select id="selectByOthers" resultType="com.example.demo.pojo.returnDao.OthersDao">
+        select e1.ename as 'employee',e2.ename as 'leader' from emp1 e1 left join emp1 e2 on e1.mgr=e2.empno
+    </select>
+
+
+</mapper>

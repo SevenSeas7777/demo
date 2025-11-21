@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.CustomerMapper">
+    <update id="updateCustomerBySet">
+        update customer
+        <set>
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="jobs!=null and jobs!=''">
+                jobs=#{jobs}
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <select id="QueryByNameAndJobs" parameterType="com.example.demo.pojo.Customer"
+            resultType="com.example.demo.pojo.Customer">
+        select * from customer
+        <where>
+            <if test="username!=null and username!=''">
+                and username like concat('%',#{username},'%')
+            </if>
+            <if test="jobs!=null and jobs!=''">
+                and jobs=#{jobs}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByWhere" resultType="com.example.demo.pojo.Customer">
+        select * from customer
+        <where>
+            <choose>
+                <when test="username!=null and username!=''">
+                    and username like concat('%',#{username},'%')
+                </when>
+                <when test="jobs!=null and jobs!=''">
+                    and jobs=#{jobs}
+                </when>
+                <otherwise>
+                    and phone is not null
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="findByArray" resultType="com.example.demo.pojo.Customer">
+        select * from Customer where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="findByMap" resultType="com.example.demo.pojo.Customer">
+        select * from customer where jobs=#{jobs} and id in
+        <foreach item="roleMap" index="index" collection="id" open="(" separator="," close=")">
+            #{roleMap}
+        </foreach>
+    </select>
+    <select id="findByList" resultType="com.example.demo.pojo.Customer">
+        select * from Customer where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+
+    </select>
+
+
+</mapper>

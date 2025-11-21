@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+    <resultMap id="userMap" type="com.example.demo.pojo.User">
+        <id column="user_id" property="userId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="username" property="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="balance" property="bal" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <insert id="insert">
+        insert into t_user (username<if test="balance !=null">,balance</if>)
+        values (#{username},<if test="balance !=null">#{balance}</if>)
+    </insert>
+    <update id="update">
+        update t_user
+        set
+        <if test="username !=null">
+            username=#{username}
+        </if>
+        <if test="balance !=null">
+            ,balance=#{balance}
+        </if>
+
+    </update>
+    <delete id="delete">
+        delete from t_user
+        <where>
+            <if test="userId !=null">
+                user_id=#{userId}
+            </if>
+            <if test="username !=null">
+                and username=#{username}
+            </if>
+            <if test="balance !=null">
+                and balance=#{balance}
+            </if>
+        </where>
+    </delete>
+    <select id="find" resultMap="userMap">
+        select * from t_user
+        <where>
+            <if test="name !=null">
+                username=#{name}
+            </if>
+            <if test="bal !=null">
+                and balance=#{bal}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
