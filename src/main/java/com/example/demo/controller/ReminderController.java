@@ -14,6 +14,6 @@ public class ReminderController {
     @GetMapping("/sendReminder")
     public String sendReminder(@RequestParam String message) {
         reminderProducer.sendReminder(message);
-        return "Reminder sent: " + message;
+        return "XYX Reminder sent: " + message;
     }
 }
