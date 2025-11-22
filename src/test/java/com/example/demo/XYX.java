@@ -18,6 +18,5 @@ public class XYX {
     public void test1(){
         System.out.println("test1");
         //1
-        //2
     }
 }
